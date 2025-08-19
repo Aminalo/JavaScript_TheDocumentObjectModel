@@ -117,3 +117,93 @@ function logResult(tag, text, tone = "") {
   frag.appendChild(li);
   logList.prepend(frag);
 }
+
+// Start game via form submit (HTML + JS validation)
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!form.checkValidity()) {
+    playerInput.setCustomValidity("Enter 3–20 chars, starting with a letter.");
+    playerInput.reportValidity();
+    return;
+  }
+  playerInput.setCustomValidity("");
+
+  const name = playerInput.value.trim();
+  const rounds = Number(roundsInput.value);
+  if (Number.isNaN(rounds) || rounds < 3 || rounds > 10) {
+    roundsInput.setCustomValidity("Rounds must be 3–10.");
+    roundsInput.reportValidity();
+    return;
+  }
+  roundsInput.setCustomValidity("");
+
+  totalRounds = rounds;
+  currentRound = 0;
+  best = null;
+  times = [];
+  updateLabels();
+  setArenaSize(arenaSelect.value);
+
+  playing = true;
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+
+  // sibling nav demo: pulse the next card
+  const nextCard = panelCard.nextElementSibling;
+  if (nextCard) {
+    nextCard.classList.add("pulse-once");
+    setTimeout(() => nextCard.classList.remove("pulse-once"), 300);
+  }
+
+  setMessage(`Good luck, ${name}!`);
+  logResult("START", `${name} started: ${totalRounds} rounds`);
+  nextRound();
+});
+
+// Stop (pause) game
+stopBtn.addEventListener("click", () => {
+  if (!playing) return;
+  playing = false;
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  clearTimeout(appearTimeout);
+  clearTarget();
+  setMessage("Game paused.");
+  logResult("PAUSE", "Game paused.", "bad");
+});
+
+// Reset to initial state (BOM confirm)
+resetBtn.addEventListener("click", () => {
+  const ok = window.confirm("Reset everything?");
+  if (!ok) return;
+
+  playing = false;
+  clearTimeout(appearTimeout);
+  clearTarget();
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+
+  logList.innerHTML = "";
+  currentRound = 0;
+  totalRounds = Number(roundsInput.value) || 5;
+  best = null;
+  times = [];
+  updateLabels();
+
+  setMessage("Enter your name, choose rounds, and press Start.");
+  logResult("RESET", "Board reset.");
+});
+
+// Clicks inside arena that are NOT on the target
+playArea.addEventListener("click", (e) => {
+  if (!playing) return;
+  if (e.target.classList.contains("target")) return; // handled in onHit
+
+  if (waiting) {
+    logResult("EARLY", "Clicked before target appeared.", "bad");
+    setMessage("Too soon! Wait for the target.", "bad");
+  } else {
+    logResult("MISS", "Clicked outside the target.", "bad");
+    setMessage("Missed! Aim for the circle.", "bad");
+  }
+});
