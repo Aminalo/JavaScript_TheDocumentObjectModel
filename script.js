@@ -207,3 +207,38 @@ playArea.addEventListener("click", (e) => {
     setMessage("Missed! Aim for the circle.", "bad");
   }
 });
+
+
+// Successful hit on target
+function onHit() {
+  if (!playing) return;
+  const rt = Math.round(performance.now() - startTime);
+  times.push(rt);
+  if (best == null || rt < best) best = rt;
+
+  logResult(`R${currentRound}`, `Reaction: ${rt} ms`, "good");
+  setMessage(`Nice! ${rt} ms`, "good");
+  clearTarget();
+
+  if (currentRound >= totalRounds) {
+    endGame();
+  } else {
+    nextRound();
+  }
+}
+
+// Wrap up the session
+function endGame() {
+  playing = false;
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+  clearTimeout(appearTimeout);
+  clearTarget();
+
+  const avg = times.length ? Math.round(times.reduce((a,b)=>a+b,0)/times.length) : "—";
+  setMessage(`Done! Best: ${best ?? "—"} ms, Avg: ${avg} ms`);
+  logResult("END", `Best ${best ?? "—"} ms • Avg ${avg} ms`);
+
+  // small BOM alert
+  setTimeout(() => window.alert("Game over! Check your results on the right."), 50);
+}
