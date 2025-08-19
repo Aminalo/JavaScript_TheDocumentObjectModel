@@ -242,3 +242,13 @@ function endGame() {
   // small BOM alert
   setTimeout(() => window.alert("Game over! Check your results on the right."), 50);
 }
+
+// Iterate a collection: tiny alternating border color on cards
+cards.forEach((card, i) => {
+  card.style.borderColor = i % 2 ? "#22325f" : "#1e2b55";
+});
+
+// Optional live validation hint for player name
+playerInput.addEventListener("input", () => {
+  playerInput.setCustomValidity(playerInput.validity.valid ? "" : "Enter 3–20 chars, starting with a letter.");
+});
