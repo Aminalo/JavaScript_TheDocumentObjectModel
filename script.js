@@ -83,3 +83,23 @@ function placeTarget() {
   target.addEventListener("click", onHit);
   playArea.appendChild(target);
 }
+
+
+function scheduleAppearance() {
+  waiting = true;
+  const delay = rnd(600, 1800); // random wait before target appears
+  appearTimeout = setTimeout(() => {
+    placeTarget();
+    startTime = performance.now();
+    waiting = false;
+    setMessage("Click it! 🔥", "good");
+  }, delay);
+}
+
+function nextRound() {
+  currentRound += 1;
+  updateLabels();
+  if (currentRound > totalRounds) return endGame();
+  setMessage("Wait for it…");
+  scheduleAppearance();
+}
