@@ -44,3 +44,17 @@ function updateLabels() {
     : `📊 Avg: —`;
 }
 updateLabels();
+
+// Set message text + tone class
+function setMessage(text, tone = "") {
+  messageEl.textContent = text;
+  messageEl.className = "muted";
+  if (tone) messageEl.classList.add(tone);
+}
+
+// Adjust arena height from select (attribute/style change)
+function setArenaSize(size) {
+  if (size === "small")      playArea.style.height = "280px";
+  else if (size === "medium") playArea.style.height = "360px";
+  else                        playArea.style.height = "460px";
+}
