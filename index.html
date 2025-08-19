@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reaction Dash — DOM/BOM SBA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1 id="title">Reaction Dash</h1>
+    <p id="subtitle">Wait for the target to appear, then click it as fast as you can!</p>
+  </header>
+  <main id="main">
+    <section id="panel" class="card">
+      <form id="dash-form" novalidate>
+        <div class="row">
+          <label for="player">Player name</label>
+          <input id="player" name="player" type="text" placeholder="Your name"
+                 required minlength="3" maxlength="20" pattern="^[A-Za-z][A-Za-z0-9_ ]+$" />
+          <small class="muted">Letters first, 3–20 chars.</small>
+        </div>
+        <div class="row">
+          <label for="rounds">Rounds</label>
+          <input id="rounds" name="rounds" type="number" min="3" max="10" value="5" required />
+        </div>
+        <div class="row">
+          <label for="arena">Arena size</label>
+          <select id="arena" name="arena" required>
+            <option value="small" selected>Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+        <div class="row buttons">
+          <button id="start-btn" type="submit">Start</button>
+          <button id="stop-btn" type="button" disabled>Stop</button>
+          <button id="reset-btn" type="button">Reset</button>
+        </div>
+      </form>
+      <div id="status" class="status">
+        <span id="round-label">🎮 Round: 0 / 5</span>
+        <span id="best-label">🏆 Best: —</span>
+        <span id="avg-label">📊 Avg: —</span>
+      </div>
+    </section>
+
+    <section id="board" class="card">
+      <h2>Arena</h2>
+      <p id="message" class="muted">Enter your name, choose rounds, and press Start.</p>
+      <div id="play-area" class="play-area"></div>
+    </section>
+
+    <section id="log-card" class="card">
+      <h2>Results</h2>
+      <ul id="log" class="log"></ul>
+    </section>
+  </main>
+
+  <template id="log-template">
+    <li class="log-item">
+      <span class="tag"></span>
+      <span class="txt"></span>
+    </li>
+  </template>
+
+  <footer class="app-footer">
+    <small>DOM/BOM demo for SBA.</small>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
