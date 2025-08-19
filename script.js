@@ -240,7 +240,7 @@ function endGame() {
   logResult("END", `Best ${best ?? "—"} ms • Avg ${avg} ms`);
 
   // small BOM alert
-  setTimeout(() => window.alert("Game over! Check your results on the right."), 50);
+  setTimeout(() => window.alert("Game over! Check your results on the left."), 50);
 }
 
 // Iterate a collection: tiny alternating border color on cards
