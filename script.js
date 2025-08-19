@@ -103,3 +103,17 @@ function nextRound() {
   setMessage("Wait for it…");
   scheduleAppearance();
 }
+
+
+// Log helper using <template> + DocumentFragment + cloneNode
+function logResult(tag, text, tone = "") {
+  const frag = document.createDocumentFragment();
+  const node = logTpl.content.cloneNode(true);
+  const li = node.querySelector(".log-item");
+  li.querySelector(".tag").textContent = tag;
+  const txt = li.querySelector(".txt");
+  txt.textContent = text;
+  if (tone) txt.classList.add(tone);
+  frag.appendChild(li);
+  logList.prepend(frag);
+}
