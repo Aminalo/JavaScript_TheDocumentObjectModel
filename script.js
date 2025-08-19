@@ -58,3 +58,28 @@ function setArenaSize(size) {
   else if (size === "medium") playArea.style.height = "360px";
   else                        playArea.style.height = "460px";
 }
+
+// Remove any existing target
+function clearTarget() {
+  const t = playArea.querySelector(".target");
+  if (t) t.remove();
+}
+
+// Create and append a target element at a random position
+function placeTarget() {
+  clearTarget();
+  const target = document.createElement("button");
+  target.type = "button";
+  target.className = "target";
+  target.setAttribute("aria-label", "Reaction target");
+  target.textContent = "●";
+
+  const rect = playArea.getBoundingClientRect();
+  const x = rnd(0, Math.max(0, rect.width - 56));
+  const y = rnd(0, Math.max(0, rect.height - 56));
+  target.style.left = `${x}px`;
+  target.style.top = `${y}px`;
+
+  target.addEventListener("click", onHit);
+  playArea.appendChild(target);
+}
